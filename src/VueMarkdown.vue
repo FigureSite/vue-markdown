@@ -1,20 +1,23 @@
+
+<script>
 import markdownIt from 'markdown-it'
 import emoji from 'markdown-it-emoji'
 import subscript from 'markdown-it-sub'
 import superscript from 'markdown-it-sup'
 import footnote from 'markdown-it-footnote'
 import deflist from 'markdown-it-deflist'
+import figuresite from 'markdown-it-figuresite'
 import abbreviation from 'markdown-it-abbr'
 import insert from 'markdown-it-ins'
 import mark from 'markdown-it-mark'
 import toc from 'markdown-it-toc-and-anchor'
 import katex from 'markdown-it-katex'
 import tasklists from 'markdown-it-task-lists'
+import twemoji from 'twemoji'
 
 export default {
   md: new markdownIt(),
-
-  template: '<div><slot></slot></div>',
+  name: 'vue-markdown',
 
   data() {
     return {
@@ -148,9 +151,16 @@ export default {
       .use(mark)
       .use(katex, { "throwOnError": false, "errorColor": " #cc0000" })
       .use(tasklists, { enabled: this.taskLists })
-
+      .use(figuresite, {youtube: {width: 640, height:390}})
     if (this.emoji) {
       this.md.use(emoji)
+    }
+
+    this.md.renderer.rules.emoji = function(token, idx) {
+      return twemoji.parse(token[idx].content, {
+        folder: 'svg',
+        ext: '.svg'
+      });
     }
 
     this.md.set({
@@ -238,3 +248,16 @@ export default {
     })
   },
 }
+</script>
+
+<style>
+.emoji {
+  height: 1.45em;
+  margin-left: .05em;
+  margin-right: .1em;
+  object-fit: contain;
+  vertical-align: -.4em;
+  width: 1.45em;
+}
+
+</style>

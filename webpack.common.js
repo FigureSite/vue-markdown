@@ -1,5 +1,13 @@
 var webpack = require("webpack");
 var version = require("./package.json").version;
+const path = require('path')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+var nodeExternals = require('webpack-node-externals')
+var MiniCssExtractPlugin = require('mini-css-extract-plugin')
+function resolve (dir) {
+  return path.join(__dirname, dir)
+}
+
 var banner =
   "/**\n" +
   " * vue-markdown v" + version + "\n" +
@@ -8,32 +16,45 @@ var banner =
   " */\n";
 
 module.exports = {
-  entry: "./src/VueMarkdown.js",
-  target: "node",
+  entry: "./src/main.js",
+  mode: 'production',
+  target: 'node',
   output: {
-    path: "./dist",
-    filename: "vue-markdown.common.js",
+    path: path.resolve(__dirname, './dist'),
+    filename: "index.js",
     library: "VueMarkdown",
     libraryTarget: "umd"
   },
-  externals: /^[^.]/,
+  externals: nodeExternals(),
+  resolve: {
+    extensions: ['.js', '.vue', '.json'],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
+    }
+  },
   plugins: [
-    new webpack.BannerPlugin(banner, { raw: true })
+    new webpack.BannerPlugin({banner: banner, raw: true }),
+    new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({filename: '[name].css'})
   ],
+
   module: {
-    loaders: [{
+    rules: [{
       test: /\.vue$/,
-      loader: "vue"
-    }, {
-        test: /\.js$/,
-        loader: "babel",
-        exclude: /node_modules/
-      }, {
-        test: /\.css$/,
-        loader: "style!css"
-      }, {
-        test: /\.json$/,
-        loader: "json-loader"
-      }]
+      loader: "vue-loader",
+    },
+    {
+      test: /\.css$/,
+      use: [
+        "vue-style-loader",
+        MiniCssExtractPlugin.loader,
+        'css-loader'
+      ],
+    },
+    {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      include: [resolve('src')]
+    }]
   },
 }

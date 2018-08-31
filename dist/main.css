@@ -1,0 +1,17 @@
+/**
+ * vue-markdown v2.2.4
+ * https://github.com/miaolz123/vue-markdown
+ * MIT License
+ */
+
+
+.emoji {
+  height: 1.45em;
+  margin-left: .05em;
+  margin-right: .1em;
+  object-fit: contain;
+  vertical-align: -.4em;
+  width: 1.45em;
+}
+
+
