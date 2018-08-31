@@ -6,6 +6,7 @@
   "files": [
     "dist/vue-markdown.js",
     "dist/index.js",
+    "dist/main.css",
     "src"
   ],
   "scripts": {
