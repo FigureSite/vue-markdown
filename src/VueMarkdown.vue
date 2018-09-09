@@ -13,6 +13,7 @@ import mark from 'markdown-it-mark'
 import toc from 'markdown-it-toc-and-anchor'
 import katex from 'markdown-it-katex'
 import tasklists from 'markdown-it-task-lists'
+import centerText from 'markdown-it-center-text'
 import twemoji from 'twemoji'
 
 export default {
@@ -152,6 +153,7 @@ export default {
       .use(katex, { "throwOnError": false, "errorColor": " #cc0000" })
       .use(tasklists, { enabled: this.taskLists })
       .use(figuresite, {youtube: {width: 640, height:390}})
+      .use(centerText)
     if (this.emoji) {
       this.md.use(emoji)
     }
