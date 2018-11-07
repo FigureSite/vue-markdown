@@ -15,7 +15,7 @@ import katex from 'markdown-it-katex'
 import tasklists from 'markdown-it-task-lists'
 import centerText from 'markdown-it-center-text'
 import twemoji from 'twemoji'
-
+import container from 'markdown-it-container'
 export default {
   md: new markdownIt(),
   name: 'vue-markdown',
@@ -154,7 +154,7 @@ export default {
       .use(tasklists, { enabled: this.taskLists })
       .use(figuresite, {youtube: {width: 640, height:390}})
       .use(centerText)
-      .use(require('markdown-it-container'), 'spoiler', {
+      .use(container, 'spoiler', {
         render: function (tokens, idx) {
             var m = tokens[idx].info.trim().match(/^spoiler\s+(.*)$/);
 
