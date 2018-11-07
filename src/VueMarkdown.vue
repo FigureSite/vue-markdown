@@ -154,6 +154,19 @@ export default {
       .use(tasklists, { enabled: this.taskLists })
       .use(figuresite, {youtube: {width: 640, height:390}})
       .use(centerText)
+      .use(require('markdown-it-container'), 'spoiler', {
+        render: function (tokens, idx) {
+            var m = tokens[idx].info.trim().match(/^spoiler\s+(.*)$/);
+
+            if (tokens[idx].nesting === 1) {
+              // opening tag
+              return '<span class="spoiler">' + md.utils.escapeHtml(m[1]) + '\n';
+            } else {
+              // closing tag
+              return '</span>\n';
+          }
+        }
+      })
     if (this.emoji) {
       this.md.use(emoji)
     }
