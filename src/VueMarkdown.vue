@@ -154,24 +154,50 @@ export default {
       .use(tasklists, { enabled: this.taskLists })
       .use(figuresite, {youtube: {width: 640, height:390}})
       .use(centerText)
-      .use(container, 'spoiler', {
-        render: function (tokens, idx) {
-            var m = tokens[idx].info.trim().match(/^spoiler\s+(.*)$/);
 
+      this.md.use(container, 'spoiler', {
+        validate: function(params) {
+          if (params.trim() === 'spoiler') {
+            return params
+          }
+        },
+
+        render: function (tokens, idx) {
             if (tokens[idx].nesting === 1) {
               // opening tag
-              return '<span class="spoiler">' + md.utils.escapeHtml(m[1]) + '\n';
+              return '<span class="spoiler">'+ '\n';
             } else {
               // closing tag
               return '</span>\n';
           }
         }
       })
+
+      this.md.use(container, 'cita', {
+        validate: function(params) {
+          return params
+        },
+
+        render: function (tokens, idx) {
+          console.log('current token: ', tokens[idx])
+          if(tokens[idx].type === 'container_cita_open') {
+            if (tokens[idx].nesting === 1) {
+              return `<UserQuote username="${username}" id="${id}">`+ '\n';
+            } else {
+              // closing tag
+            }
+          } else {
+            return '</UserQuote>\n';
+          }
+        }
+      })
+
     if (this.emoji) {
       this.md.use(emoji)
     }
 
     this.md.renderer.rules.emoji = function(token, idx) {
+      console.log('tuken', token[idx])
       return twemoji.parse(token[idx].content, {
         folder: 'svg',
         ext: '.svg'
@@ -231,6 +257,9 @@ export default {
       this.md.render(
         this.prerender(this.sourceData)
       ) : ''
+
+    outHtml = outHtml.split(':::').join('')
+
     outHtml = this.postrender(outHtml);
 
     this.$emit('rendered', outHtml)
