@@ -16,6 +16,7 @@ import tasklists from 'markdown-it-task-lists'
 import centerText from 'markdown-it-center-text'
 import twemoji from 'twemoji'
 import container from 'markdown-it-container'
+import mili from 'markdown-it-linkify-images'
 export default {
   md: new markdownIt(),
   name: 'vue-markdown',
@@ -154,6 +155,10 @@ export default {
       .use(tasklists, { enabled: this.taskLists })
       .use(figuresite, {youtube: {width: 640, height:390}})
       .use(centerText)
+      .use(mili, {
+        target: '_blank',
+        imgClass: 'user-image'
+      })
 
       this.md.use(container, 'spoiler', {
         validate: function(params) {
