@@ -155,10 +155,6 @@ export default {
       .use(tasklists, { enabled: this.taskLists })
       .use(figuresite, {youtube: {width: 640, height:390}})
       .use(centerText)
-      .use(mili, {
-        target: '_blank',
-        imgClass: 'user-image'
-      })
 
       this.md.use(container, 'spoiler', {
         validate: function(params) {
@@ -178,24 +174,33 @@ export default {
         }
       })
 
-      this.md.use(container, 'cita', {
-        validate: function(params) {
-          return params
-        },
+    this.md.use(container, 'cita', {
+      validate: function(params) {
+        return params
+      },
 
-        render: function (tokens, idx) {
-          console.log('current token: ', tokens[idx])
-          if(tokens[idx].type === 'container_cita_open') {
-            if (tokens[idx].nesting === 1) {
-              return `<UserQuote username="${username}" id="${id}">`+ '\n';
-            } else {
-              // closing tag
-            }
+      render: function (tokens, idx) {
+        console.log('current token: ', tokens[idx])
+        if(tokens[idx].type === 'container_cita_open') {
+          if (tokens[idx].nesting === 1) {
+            let token = tokens[idx].info.replace(/ +(?= )/g,'')
+            token = token.trim()
+            let username = token.split(' ')[1]
+            let id = token.split(' ')[2]
+            return `<UserQuote username="${username}" id="${id}">`+ '\n';
           } else {
-            return '</UserQuote>\n';
+            // closing tag
           }
+        } else {
+          return '</UserQuote>\n';
         }
-      })
+      }
+    })
+
+    this.md.use(mili, {
+      target: '_blank',
+      imgClass: 'user-image'
+    })
 
     if (this.emoji) {
       this.md.use(emoji)
