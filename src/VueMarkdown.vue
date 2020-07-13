@@ -17,6 +17,7 @@ import centerText from 'markdown-it-center-text'
 import twemoji from 'twemoji'
 import container from 'markdown-it-container'
 import mili from 'markdown-it-linkify-images'
+import justifyText from 'markdown-it-justify-text'
 export default {
   md: new markdownIt(),
   name: 'vue-markdown',
@@ -155,6 +156,7 @@ export default {
       .use(tasklists, { enabled: this.taskLists })
       .use(figuresite, {youtube: {width: 640, height:390}})
       .use(centerText)
+      .use(justifyText)
 
       this.md.use(container, 'spoiler', {
         validate: function(params) {

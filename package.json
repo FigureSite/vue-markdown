@@ -53,6 +53,7 @@
     "markdown-it-figuresite": "git+https://github.com/FigureSite/markdown-it-figuresite.git",
     "markdown-it-footnote": "^2.0.0",
     "markdown-it-ins": "^2.0.0",
+    "markdown-it-justify-text": "git+https://github.com/Hobbyfiguras/markdown-it-justify-text.git",
     "markdown-it-katex": "^2.0.3",
     "markdown-it-linkify-images": "^1.1.0",
     "markdown-it-mark": "^2.0.0",
